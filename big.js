@@ -241,7 +241,7 @@
 
   /*
    * Return a string representing the value of Big x in normal or exponential notation.
-   * Handles P.toExponential, P.toFixed, P.toJSON, P.toPrecision, P.toString and P.valueOf.
+   * Handles P.toExponential, P.toFixed, P.toJSON, P.toPrecision and P.valueOf.
    *
    * x {Big}
    * id? {number} Caller id.
@@ -298,6 +298,32 @@
 
     return x.s < 0 && (!z || id == 4) ? '-' + s : s;
   }
+
+function format(x) {
+    if (x.cmp(1) <= 0) {
+        return "0";
+    }
+
+    var charA = 'a'.charCodeAt(0);
+    var units = ["", "K", "M", "B", "T"];
+    var n = Math.floor(x.e / 3);
+    var m = x.c.slice(0, 5)
+    if (m.length > 3) {
+      m.splice(3, 0, ".")
+    }
+    var unit = "";
+    if (n < units.length) {
+        unit = units[n];
+    }
+    else {
+        var unitInt = n - units.length;
+        var secondUnit = unitInt % 26;
+        var firstUnit = unitInt / 26;
+        unit = String.fromCharCode(firstUnit + charA) + String.fromCharCode(secondUnit + charA);
+    }
+
+    return m.join("") + unit;
+}
 
 
   // Prototype/instance methods
@@ -904,7 +930,7 @@
    * Omit the sign for negative zero.
    */
   P.toString = function () {
-    return stringify(this);
+    return format(this);
   };
 
 
