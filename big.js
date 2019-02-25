@@ -241,7 +241,7 @@
 
   /*
    * Return a string representing the value of Big x in normal or exponential notation.
-   * Handles P.toExponential, P.toFixed, P.toJSON, P.toPrecision and P.valueOf.
+   * Handles P.toExponential, P.toFixed and P.toPrecision.
    *
    * x {Big}
    * id? {number} Caller id.
@@ -925,9 +925,6 @@ function format(x) {
 
   /*
    * Return a string representing the value of this Big.
-   * Return exponential notation if this Big has a positive exponent equal to or greater than
-   * Big.PE, or a negative exponent equal to or less than Big.NE.
-   * Omit the sign for negative zero.
    */
   P.toString = function () {
     return format(this);
@@ -936,12 +933,9 @@ function format(x) {
 
   /*
    * Return a string representing the value of this Big.
-   * Return exponential notation if this Big has a positive exponent equal to or greater than
-   * Big.PE, or a negative exponent equal to or less than Big.NE.
-   * Include the sign for negative zero.
    */
   P.valueOf = P.toJSON = function () {
-    return stringify(this, 4);
+    return format(this);
   };
 
 
